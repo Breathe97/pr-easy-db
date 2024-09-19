@@ -109,5 +109,5 @@ export class PrEasyD1<T> {
    * @param data 删除的数据
    * @example delete('Users',[{ id:'breathe' },{ username:'breathe' }])
    */
-  delete = (table: T, datas: object[] = []) => {}
+  // delete = (table: T, datas: object[] = []) => {}
 }
