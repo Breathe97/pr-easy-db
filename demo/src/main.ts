@@ -1,4 +1,5 @@
-import { PrEasyD1 } from '../../src/index'
+// import { PrEasyD1 } from '../../src/index'
+import { PrEasyD1 } from 'pr-easy-db'
 
 type TableNames = 'Users' | 'Books'
 
