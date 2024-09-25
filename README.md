@@ -55,6 +55,12 @@ SELECT * FROM Users WHERE ((age = ?) AND ((account LIKE ? OR mobile LIKE ? OR em
   const { query, values } = sql.end()
   console.log('\x1b[38;2;0;151;255m%c%s\x1b[0m', 'color:#0097ff;padding:16px 0;', `------->Breathe:{ query, values }`, { query, values })
 }
+
+// 如果你只想查询总数
+{
+  const { query, values } = sql.total()
+  console.log('\x1b[38;2;0;151;255m%c%s\x1b[0m', 'color:#0097ff;padding:16px 0;', `------->Breathe:{ query, values }`, { query, values })
+}
 ```
 
 #### 修改
