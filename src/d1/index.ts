@@ -211,6 +211,9 @@ export class PrEasyD1<T> {
       this.#query += ` ${str}`
     }
 
+    {
+      $sort = { created_at: 1 }
+    }
     if ($sort) {
       let str = ' ORDER BY'
       let items = Object.entries($sort).entries()
@@ -221,7 +224,8 @@ export class PrEasyD1<T> {
         }
         str += `, ${key}`
       }
-      this.#query += `${str} ASC`
+      // this.#query += `${str} ASC`
+      this.#query += `${str} DESC`
     }
     // page size
     if (page && size) {
@@ -301,6 +305,8 @@ export class PrEasyD1<T> {
       }
     }
     query = query.replace('*', 'COUNT(*)')
+    query = query.split(' ORDER')[0]
+    values = values.slice(0, values.length - 2)
     let obj = { query, values }
     return obj
   }
