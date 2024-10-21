@@ -191,8 +191,10 @@ export class PrEasyD1<T> {
                   let str = this.#arrSplit2Str(arr2, 'OR')
                   arr.push(str)
                 }
-                let str = this.#arrSplit2Str(arr, 'AND')
-                conditionArr.push(str)
+                if (arr.length > 0) {
+                  let str = this.#arrSplit2Str(arr, 'AND')
+                  conditionArr.push(str)
+                }
               }
             }
             break
