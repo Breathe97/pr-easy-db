@@ -4,6 +4,9 @@ interface PipelineItem {
    */
   $match?: {
     $or?: object[]
+    $range?: {
+      [key: string]: [number, number]
+    }[]
     [key: string]: unknown
   }
 
@@ -80,7 +83,7 @@ export class PrEasyD1<T> {
   }
 
   // { name : 'breathe , age: 12 }  => ['name = ?','age = ?']
-  #objSplit2Arr(obj = {}, splitStr: '=' | 'LIKE' = '=') {
+  #objSplit2Arr(obj = {}, splitStr: '=' | 'LIKE' | '<=' | '>=' = '=') {
     const keys = Object.keys(obj)
     if (keys.length === 0) return []
     let vals = Object.values(obj)
@@ -190,6 +193,31 @@ export class PrEasyD1<T> {
                   let arr2 = this.#objSplit2Arr(obj, 'LIKE')
                   let str = this.#arrSplit2Str(arr2, 'OR')
                   arr.push(str)
+                }
+                if (arr.length > 0) {
+                  let str = this.#arrSplit2Str(arr, 'AND')
+                  conditionArr.push(str)
+                }
+              }
+            }
+            break
+          case '$range':
+            // 范围查询
+            {
+              if (Array.isArray(val)) {
+                const arr = []
+                for (const obj of val) {
+                  const keys = Object.keys(obj).slice(0, 1)
+                  for (const key of keys) {
+                    const [start, end] = obj[key]
+                    if (!start || !end) break
+                    {
+                      let arr2 = this.#objSplit2Arr({ [key]: start }, '>=')
+                      let arr3 = this.#objSplit2Arr({ [key]: end }, '<=')
+                      let str = this.#arrSplit2Str([...arr2, ...arr3], 'AND')
+                      arr.push(str)
+                    }
+                  }
                 }
                 if (arr.length > 0) {
                   let str = this.#arrSplit2Str(arr, 'AND')
