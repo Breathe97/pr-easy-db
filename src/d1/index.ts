@@ -167,7 +167,7 @@ export class PrEasyD1<T> {
   #select(pipelineItem: PipelineItem) {
     this.#query = `SELECT * FROM ${this.#tableName}`
     this.#values = []
-    let { end_id, end_key = '_id', $match, $sort, page, size } = pipelineItem
+    let { end_id, end_key = '_id', $match, $sort, page = 1, size = 50 } = pipelineItem
 
     // 指定id后查询
     if (end_id) {
@@ -191,11 +191,11 @@ export class PrEasyD1<T> {
                 const arr = []
                 for (const obj of val) {
                   let arr2 = this.#objSplit2Arr(obj, 'LIKE')
-                  let str = this.#arrSplit2Str(arr2, 'OR')
+                  let str = this.#arrSplit2Str(arr2, 'AND')
                   arr.push(str)
                 }
                 if (arr.length > 0) {
-                  let str = this.#arrSplit2Str(arr, 'AND')
+                  let str = this.#arrSplit2Str(arr, 'OR')
                   conditionArr.push(str)
                 }
               }
@@ -229,7 +229,7 @@ export class PrEasyD1<T> {
 
           default:
             // 精准查询 {条件一,条件二}
-            {
+            if (val) {
               let arr = this.#objSplit2Arr({ [key]: val }) // [key = ?]
               let str = this.#arrSplit2Str(arr, 'AND')
               conditionArr.push(str)
